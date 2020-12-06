@@ -1,9 +1,11 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Slot, useSlot } from "./Slot";
 
-const symbols = ["ma", "sa", "wa", "da"] as const;
+type SlotmachineProps = Readonly<{
+  symbols: readonly string[];
+}>;
 
-export const Slotmachine: React.FC = () => {
+export const Slotmachine: React.FC<SlotmachineProps> = ({ symbols }) => {
   const [machineState, setMachineState] = useState<"rolling" | "stopped">(
     "stopped"
   );

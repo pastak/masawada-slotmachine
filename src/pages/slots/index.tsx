@@ -3,6 +3,9 @@ import Head from "next/head";
 import { Slotmachine } from "../../components/Slotmachine";
 
 const SlotPage: React.FC = () => {
+  const symbols = ["ma", "sa", "wa", "da"] as const;
+  // const symbols = ["ma", "sa", "wa", "pa", "pi", "x"] as const;
+
   return (
     <div>
       <Head>
@@ -10,7 +13,7 @@ const SlotPage: React.FC = () => {
       </Head>
       <h1>masawada slot!!</h1>
       <hr />
-      <Slotmachine />
+      <Slotmachine symbols={symbols} />
     </div>
   );
 };
