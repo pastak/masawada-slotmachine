@@ -9,4 +9,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
   ],
+  rules: {
+    "react/prop-types": ["warn", { skipUndeclared: true }],
+  },
 };

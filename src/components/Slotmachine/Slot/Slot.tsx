@@ -41,7 +41,7 @@ export const Slot: React.FC<SlotProps> = ({
         window.clearInterval(interval.current);
       }
     };
-  }, [state]);
+  }, [setNextIndex, state]);
   const stop = () => {
     window.clearInterval(interval.current);
     onStop(index);
