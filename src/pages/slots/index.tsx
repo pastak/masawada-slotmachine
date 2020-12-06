@@ -37,7 +37,8 @@ const Slotmachine: React.FC = () => {
     ) {
       // success!
       window.alert("success!");
-      // todo reset state (or )
+      // reset status
+      results.current = [];
     }
   };
   const onUpdateMa = useCallback(
