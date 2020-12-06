@@ -1,0 +1,14 @@
+{
+  "name": "masawada-slotmachine",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/astj/masawada-slotmachine.git",
+  "author": "Asato Wakisaka <asato.wakisaka@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "next": "^10.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
