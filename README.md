@@ -2,7 +2,17 @@
 
 https://astj.github.io/masawada-slotmachine/slots.html
 
-wip
+## develop
+
+```
+yarn dev
+```
+
+Then see http://localhost:3000/masawada-slotmachine/slots
+
+## deploy
+
+see `.github/workflows/deploy.yaml` .
 
 ## License
 
