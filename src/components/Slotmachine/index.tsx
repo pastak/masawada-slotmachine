@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
-import { SlotProps, Slot } from "./Slot";
+import { Slot, useSlot } from "./Slot";
 
 const symbols = ["ma", "sa", "wa", "da"] as const;
 
@@ -7,26 +7,12 @@ export const Slotmachine: React.FC = () => {
   const [machineState, setMachineState] = useState<"rolling" | "stopped">(
     "stopped"
   );
-  const [stateMa, setStateMa] = useState<SlotProps["state"]>("stopped");
-  const [stateSa, setStateSa] = useState<SlotProps["state"]>("stopped");
-  const [stateWa, setStateWa] = useState<SlotProps["state"]>("stopped");
-  const [stateDa, setStateDa] = useState<SlotProps["state"]>("stopped");
-  const results = useRef<(number | undefined)[]>([]);
+  const results = useRef<(string | undefined)[]>([]);
   const checkResult = () => {
-    if (
-      results.current[0] == undefined ||
-      results.current[1] == undefined ||
-      results.current[2] == undefined ||
-      results.current[3] == undefined
-    ) {
+    if (symbols.find((_, index) => results.current[index] === undefined)) {
       return;
     }
-    if (
-      results.current[0] === 0 &&
-      results.current[1] === 1 &&
-      results.current[2] === 2 &&
-      results.current[3] === 3
-    ) {
+    if (results.current.join("-") === "ma-sa-wa-da") {
       // success!
       window.alert("success!");
     } else {
@@ -36,86 +22,36 @@ export const Slotmachine: React.FC = () => {
     results.current = [];
     setMachineState("stopped");
   };
-  const onUpdateMa = useCallback(
-    (index: number) => {
-      setStateMa("stopped");
-      results.current[0] = index;
-      checkResult();
-    },
-    [checkResult]
+  const onStops = symbols.map((_v, i) =>
+    useCallback(
+      (symbol: string) => {
+        results.current[i] = symbol;
+        checkResult();
+      },
+      [checkResult]
+    )
   );
-  const onUpdateSa = useCallback(
-    (index: number) => {
-      setStateSa("stopped");
-      results.current[1] = index;
-      checkResult();
-    },
-    [checkResult]
-  );
-  const onUpdateWa = useCallback(
-    (index: number) => {
-      setStateWa("stopped");
-      results.current[2] = index;
-      checkResult();
-    },
-    [checkResult]
-  );
-  const onUpdateDa = useCallback(
-    (index: number) => {
-      setStateDa("stopped");
-      results.current[3] = index;
-      checkResult();
-    },
-    [checkResult]
+  const propsAndStarts = symbols.map((initialSymbol, i) =>
+    useSlot({ symbols, initialSymbol, onStop: onStops[i] })
   );
 
   const start = () => {
     setMachineState("rolling");
-    setStateMa("rolling");
-    setStateSa("rolling");
-    setStateWa("rolling");
-    setStateDa("rolling");
+    propsAndStarts.forEach(({ start }) => start());
   };
   return (
     <div>
       <table>
         <tbody>
           <tr>
-            <td>
-              <Slot
-                symbols={symbols}
-                initialIndex={0}
-                state={stateMa}
-                onStop={onUpdateMa}
-              />
-            </td>
-            <td>
-              <Slot
-                symbols={symbols}
-                initialIndex={1}
-                state={stateSa}
-                onStop={onUpdateSa}
-              />
-            </td>
-            <td>
-              <Slot
-                symbols={symbols}
-                initialIndex={2}
-                state={stateWa}
-                onStop={onUpdateWa}
-              />
-            </td>
-            <td>
-              <Slot
-                symbols={symbols}
-                initialIndex={3}
-                state={stateDa}
-                onStop={onUpdateDa}
-              />
-            </td>
+            {propsAndStarts.map(({ props }) => (
+              <td key={props.initialIndex}>
+                <Slot {...props} />
+              </td>
+            ))}
           </tr>
           <tr>
-            <td rowSpan={4}>
+            <td rowSpan={symbols.length}>
               <button
                 onClick={() => start()}
                 disabled={machineState === "rolling"}
