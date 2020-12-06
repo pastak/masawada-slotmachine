@@ -14,6 +14,19 @@ const SlotPage: React.FC = () => {
       <h1>masawada slot!!</h1>
       <hr />
       <Slotmachine symbols={symbols} />
+      <hr />
+      <dl>
+        <dt>author</dt>
+        <dd>
+          <a href="https://github.com/astj">astj</a>
+        </dd>
+        <dt>what's this?</dt>
+        <dd>
+          <a href="https://blog.astj.space/entry/2020/12/06/235824">
+            masawada advent calender 2020 12/06
+          </a>
+        </dd>
+      </dl>
     </div>
   );
 };
