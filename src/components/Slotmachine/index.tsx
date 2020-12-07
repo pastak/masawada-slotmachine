@@ -1,6 +1,12 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Slot, useSlot } from "./Slot";
 
+export type IncompleteSlotItem = string | undefined;
+export type IncompleteSlots = Array<IncompleteSlotItem>;
+export type StoppedSlotItem = string;
+export type StoppedSlots = Array<StoppedSlotItem>;
+export type Slots = StoppedSlots | IncompleteSlots;
+
 type SlotmachineProps = Readonly<{
   symbols: readonly string[];
 }>;
@@ -10,16 +16,19 @@ export const Slotmachine: React.FC<SlotmachineProps> = ({
 }) => {
   // explicitly *freeze* symbols with initial value
   const [symbols] = useState(_symbols);
+  const isStopped = (slots: Slots): slots is StoppedSlots =>
+    slots.length === symbols.length && slots.every((s) => s !== undefined);
   const [machineState, setMachineState] = useState<"rolling" | "stopped">(
     "stopped"
   );
-  const results = useRef<(string | undefined)[]>([]);
+  const results = useRef<Slots>([]);
   const checkResult = useCallback(() => {
-    if (symbols.find((_, index) => results.current[index] === undefined)) {
+    const currentResults = results.current;
+    if (!isStopped(currentResults)) {
       return;
     }
     console.log(results);
-    if (results.current.join("-") === "ma-sa-wa-da") {
+    if (currentResults.join("-") === "ma-sa-wa-da") {
       // success!
       window.alert("success!");
     } else {
