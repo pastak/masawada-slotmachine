@@ -9,10 +9,12 @@ export type Slots = StoppedSlots | IncompleteSlots;
 
 type SlotmachineProps = Readonly<{
   symbols: readonly string[];
+  onStopped: (result: StoppedSlots) => void;
 }>;
 
 export const Slotmachine: React.FC<SlotmachineProps> = ({
   symbols: _symbols,
+  onStopped,
 }) => {
   // explicitly *freeze* symbols with initial value
   const [symbols] = useState(_symbols);
@@ -34,6 +36,7 @@ export const Slotmachine: React.FC<SlotmachineProps> = ({
     } else {
       window.alert("残念でした！");
     }
+    onStopped(currentResults);
     // reset status
     results.current = [];
     setMachineState("stopped");
