@@ -19,7 +19,7 @@ export const Slotmachine: React.FC<SlotmachineProps> = ({
   // explicitly *freeze* symbols with initial value
   const [symbols] = useState(_symbols);
   const isStopped = (slots: Slots): slots is StoppedSlots =>
-    slots.length === symbols.length && slots.every((s) => s !== undefined);
+    slots.length === symbols.length && [...slots].every((s) => s !== undefined);
   const [machineState, setMachineState] = useState<"rolling" | "stopped">(
     "stopped"
   );
